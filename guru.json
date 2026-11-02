@@ -21,8 +21,8 @@
    "nama": "Zuraeda, S.Pd, M.Pd",
    "nip": "198512102014062007",
    "pangkat": "Penata Muda Tingkat I, III/b",
-   "sekolah": "SDN 3 MEREMBU",
-   "kelas": "6",
+   "sekolah": "SDN 4 MEREMBU",
+   "kelas": "",
    "role": "guru",
    "h": "8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414"
   },
@@ -33,6 +33,16 @@
    "pangkat": "",
    "sekolah": "SDN 1 MEREMBU",
    "kelas": "",
+   "role": "guru",
+   "h": "8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414"
+  },
+  {
+   "u": "eda",
+   "nama": "Zuraeda, S.Pd, M.Pd",
+   "nip": "198512102014062007",
+   "pangkat": "Penata Muda Tingkat I, III/b",
+   "sekolah": "SDN 3 MEREMBU",
+   "kelas": "6",
    "role": "guru",
    "h": "8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414"
   }
