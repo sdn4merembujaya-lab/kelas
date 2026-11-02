@@ -1,4 +1,40 @@
-{"users":[
-{"u":"admin","nama":"Administrator","nip":"","kelas":"","role":"admin","h":"240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9"},
-{"u":"guru1","nama":"Guru Contoh","nip":"","kelas":"4","role":"guru","h":"ae81343369944399b70de862dbe75536faa8e44c50ad0a312e380303173f4756"}
-]}
+{
+ "users": [
+  {
+   "u": "admin",
+   "nama": "Administrator",
+   "nip": "",
+   "kelas": "",
+   "role": "admin",
+   "h": "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9"
+  },
+  {
+   "u": "guru1",
+   "nama": "Guru Contoh",
+   "nip": "",
+   "kelas": "4",
+   "role": "guru",
+   "h": "ae81343369944399b70de862dbe75536faa8e44c50ad0a312e380303173f4756"
+  },
+  {
+   "u": "zuraeda",
+   "nama": "Zuraeda, S.Pd, M.Pd",
+   "nip": "198512102014062007",
+   "pangkat": "Penata Muda Tingkat I, III/b",
+   "sekolah": "SDN 3 MEREMBU",
+   "kelas": "6",
+   "role": "guru",
+   "h": "8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414"
+  },
+  {
+   "u": "safawal",
+   "nama": "Safawal Marwah, S.Pd",
+   "nip": "",
+   "pangkat": "",
+   "sekolah": "SDN 1 MEREMBU",
+   "kelas": "",
+   "role": "guru",
+   "h": "8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414"
+  }
+ ]
+}
