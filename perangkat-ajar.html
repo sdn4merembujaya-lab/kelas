@@ -701,7 +701,8 @@ st.textContent='#doc .pm{font:11pt/1.5 "Times New Roman",Times,serif}#doc .pm h2
 document.head.appendChild(st);
 const _f=fillBB;
 fillBB=function(){
-let e=$('#pmx');if(!e){e=document.createElement('select');e.id='pmx';e.onchange=()=>draw();$('#bb').after(e)}
+let e=$('#pmx');if(!e){e=document.createElement('select');e.id='pmx';e.onchange=()=>draw();$('#bb').after(e);const mk=(t,ti,fn)=>{const x=document.createElement('button');x.textContent=t;x.title=ti;x.className='pmb';x.onclick=fn;return x};const go=d=>{const n=e.options.length-1;if(n<1)return;let i=e.selectedIndex+d;if(i<1)i=n;if(i>n)i=1;e.selectedIndex=i;draw()};const bs=[mk('◀','Materi sebelumnya',()=>go(-1)),mk('▶','Materi berikutnya',()=>go(1)),mk('Cetak materi ini','Cetak hanya materi yang dipilih',()=>{if(e.value=='all')go(1);window.print()})];e.after(...bs);e._b=bs}
+e._b.forEach(x=>x.style.display=cur=='ppm'?'':'none');
 if(cur!='ppm'){e.style.display='none';return _f()}
 e.style.display='';const b=$('#bb');b.style.display='none';
 const {k,m}=S(),key=k+'|'+m;
