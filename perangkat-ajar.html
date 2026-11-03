@@ -694,6 +694,8 @@ const PPM=[["1","1","1","1","Mengenal kitab suci Al-Qur’an","Keimanan dan Keta
 const PM={1:'Pendidikan Agama Islam dan Budi Pekerti',2:'Pendidikan Pancasila',3:'Bahasa Indonesia',4:'Matematika',5:'IPAS',6:'PJOK',7:'Bahasa Inggris',8:'Seni Musik',9:'Seni Rupa',10:'Seni Tari',11:'Seni Teater',12:'Koding dan Kecerdasan Artifisial'};
 const ANG=['','Satu','Dua','Tiga','Empat','Lima','Enam'];
 const DPL=[['keimanan','Keimanan dan Ketakwaan terhadap Tuhan YME'],['kewargaan','Kewargaan'],['penalaran','Penalaran Kritis'],['kreativitas','Kreativitas'],['kolaborasi','Kolaborasi'],['kemandirian','Kemandirian'],['kesehatan','Kesehatan'],['komunikasi','Komunikasi']];
+const DPK={keimanan:['keimanan','beriman','takwa'],kewargaan:['kewargaan','kebinekaan','kebhinekaan','taat aturan','cinta tanah air','peduli lingkungan','warga'],penalaran:['penalaran','bernalar','nalar','literasi informasi'],kreativitas:['kreativitas','kreatif'],kolaborasi:['kolaborasi','kolaboratif','gotong royong','empati'],kemandirian:['kemandirian','mandiri'],kesehatan:['kesehatan'],komunikasi:['komunikasi','komunikatif']};
+const dpOn=(pl,d)=>(DPK[d[0]]||[d[0]]).some(w=>pl.includes(w));
 const PMI=n=>Object.keys(PM).find(i=>PM[i]==n);
 const prow=(k,m)=>PPM.filter(r=>r[0]==k&&r[1]==PMI(m)).sort((a,b)=>a[2]-b[2]);
 const st=document.createElement('style');
@@ -724,7 +726,7 @@ return `<div class="sv"><h2>Instrumen Supervisi Akademik (Kurikulum Merdeka)<br>
 <div class="kt">Keterangan : Nilai Akhir = Skor Perolehan x 100 % / Skor Maksimal (38 x 2)</div>
 <table class="tt"><tr><td>Ketercapaian : 91% - 100% = Sangat Baik<br>81% - 90% = Baik</td><td>71% - 80% = Cukup<br>Di bawah 71% = Kurang</td><td>${esc(C.tp||'')}, ${esc(C.tg||'..........')}</td></tr><tr><td colspan="2">Guru yang di Supervisi<br><br><br><br><u><b>${esc(GR(k)||'..........................')}</b></u><br>NIP. ${esc(NIPG(k)||'..........................')}</td><td>Kepala Sekolah/Tim Supervisi<br><br><br><br><u><b>${esc(C.ks||'..........................')}</b></u><br>NIP. ${esc(C.nks||'..........................')}</td></tr></table></div>`}
 function one(r){const t=esc(r[4]),f=i=>esc(r[i]),pl=r[5].toLowerCase(),k=+r[0],m=PM[r[1]];
-const dp=DPL.map((d,i)=>`<span><i>${pl.includes(d[0])?'✓':''}</i>DPL ${i+1} : ${d[1]}</span>`).join('');
+const dp=DPL.map((d,i)=>`<span><i>${dpOn(pl,d)?'✓':''}</i>DPL ${i+1} : ${d[1]}</span>`).join('');
 return `<div class="pm"><h2>PERENCANAAN PEMBELAJARAN MENDALAM</h2>
 <table class="in"><tr><td width="130">Nama Guru</td><td>: ${esc(GR(k))}</td></tr><tr><td>Nama Sekolah</td><td>: ${esc(C.sek||'')}</td></tr><tr><td>Tahun Pelajaran</td><td>: ${esc(C.th||'')}</td></tr><tr><td>Kelas / Smt</td><td>: ${k} (${ANG[k]}) / Satu</td></tr><tr><td>Mata Pelajaran</td><td>: ${m}</td></tr><tr><td>Materi</td><td>: ${t}</td></tr><tr><td>Alokasi Waktu</td><td>: 1 pertemuan (2 × 35 menit)</td></tr></table>
 ${P('A. ASESMEN PADA AWAL PEMBELAJARAN','Guru memulai dengan pertanyaan pemantik atau diskusi untuk mengetahui apa yang sudah diketahui siswa. Pada materi '+t+' asesmen awal dilakukan dengan: '+f(29))}
