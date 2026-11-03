@@ -701,9 +701,9 @@ st.textContent='#doc .pm{font:11pt/1.5 "Times New Roman",Times,serif}#doc .pm h2
 document.head.appendChild(st);
 const _f=fillBB;
 fillBB=function(){
-let e=$('#pmx');if(!e){e=document.createElement('select');e.id='pmx';e.onchange=()=>draw();$('#bb').after(e);const mk=(t,ti,fn)=>{const x=document.createElement('button');x.textContent=t;x.title=ti;x.className='pmb';x.onclick=fn;return x};const go=d=>{const n=e.options.length-1;if(n<1)return;let i=e.selectedIndex+d;if(i<1)i=n;if(i>n)i=1;e.selectedIndex=i;draw()};const bs=[mk('◀','Materi sebelumnya',()=>go(-1)),mk('▶','Materi berikutnya',()=>go(1)),mk('Cetak materi ini','Cetak hanya materi yang dipilih',()=>{if(e.value=='all')go(1);window.print()})];e.after(...bs);e._b=bs}
+let e=$('#pmx');if(!e){e=document.createElement('select');e.id='pmx';e.onchange=()=>draw();$('#bb').after(e);const mk=(t,ti,fn)=>{const x=document.createElement('button');x.textContent=t;x.title=ti;x.className='pmb';x.onclick=fn;return x};const go=d=>{const n=e.options.length-1;if(n<1)return;let i=e.selectedIndex+d;if(i<1)i=n;if(i>n)i=1;e.selectedIndex=i;draw()};const bs=[mk('◀','Materi sebelumnya',()=>go(-1)),mk('▶','Materi berikutnya',()=>go(1)),mk('Cetak materi ini','Cetak hanya materi yang dipilih',()=>{if(e.value=='all')go(1);window.print()})];e.after(...bs);e._b=bs;const bb=$('#bb'),g2=d=>{const o=[...bb.options].filter(x=>x.value!='*');if(!o.length)return;let i=o.findIndex(x=>x.value==bb.value);i=i<0?(d>0?0:o.length-1):(i+d+o.length)%o.length;bb.value=o[i].value;draw()};const cs=[mk('◀','TP/materi sebelumnya',()=>g2(-1)),mk('▶','TP/materi berikutnya',()=>g2(1)),mk('Cetak materi ini','Cetak hanya TP/materi yang dipilih',()=>{if(bb.value=='*')g2(1);window.print()})];bb.after(...cs);e._c=cs}
 e._b.forEach(x=>x.style.display=cur=='ppm'||cur=='lkp'?'':'none');
-if(cur!='ppm'&&cur!='lkp'){e.style.display='none';return _f()}
+e._c.forEach(x=>x.style.display=cur=='m8'||cur=='l8'?'':'none');if(cur!='ppm'&&cur!='lkp'){e.style.display='none';return _f()}
 e.style.display='';const b=$('#bb');b.style.display='none';
 const {k,m}=S(),key=k+'|'+m;
 if(e.dataset.key!=key){e.dataset.key=key;const R=prow(k,m);e.innerHTML='<option value="all">Semua materi ('+R.length+' modul)</option>'+R.map((x,i)=>`<option value="${i}">${i+1}. ${esc(x[4]).slice(0,70)}</option>`).join('')}
