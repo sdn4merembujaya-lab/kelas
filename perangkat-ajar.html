@@ -956,6 +956,17 @@ draw=function(){
   document.body.dataset.tab=cur;
   const e=document.getElementById('rpx');
   if(e&&e.options[0]&&e.options[0].value=='all')e.options[0].text=e.options[0].text.replace('Semua materi PPM','Semua materi');
+  /* Tampilkan daftar materi RPM lewat kolom #pmx (kolom yang dipakai dashboard di tab PPM) */
+  const px=document.getElementById('pmx');
+  if(px){
+    const on=cur=='mod'&&e&&e.style.display!='none';
+    if(on){
+      if(px.innerHTML!==e.innerHTML)px.innerHTML=e.innerHTML;
+      px.value=e.value;px.style.display='';px.title='Materi';
+      if(!px._rp){px._rp=1;px.onchange=()=>{if(cur=='mod'){const q=document.getElementById('rpx');if(q&&[...q.options].some(o=>o.value==px.value))q.value=px.value}draw()}}
+      e.style.display='none';
+    }
+  }
   return r;
 };
 draw();
