@@ -801,4 +801,126 @@ DOCS.splice(i,0,['ppm','Modul Ajar PPM','P'],['jpm','Jurnal per Materi','L'],['l
 draw();
 })();
 </script>
+<script>
+/* ===== Modul Ajar (RPM) per sub materi: pilih satu TP/ATP seperti PPM ===== */
+(function(){
+let SG=0,SI=-1,SK='';
+const _gp=grp,_mt2=mtg,_rm=R.mod,_am=allMod,_ak=allKelas;
+grp=function(k,m){if(SI<0)return _gp(k,m);const so=ONE;ONE=0;let o;try{o=_gp(k,m)}finally{ONE=so}const r={};for(const q in o)r[q]=o[q].map(g=>{if(g.n!=SG)return g;const a=[g.a[SI]||g.a[0]];return{...g,a,jp:a[0].jp}});return r};
+mtg=function(k,m,s){if(SI<0)return _mt2(k,m,s);const so=ONE;ONE=0;let r;try{r=_mt2(k,m,s)}finally{ONE=so}const f=r.filter(q=>q.x.g.n==SG&&q.x.kode==SK);return f.length?f:r.filter(q=>q.x.g.n==SG).slice(0,1)};
+R.mod=function(){const e=$('#sbx');SI=-1;if(cur=='mod'&&e&&e.value&&e.value!='all'){const v=e.value.split(':'),{k,m,s}=S();SG=+v[0];const i=+v[1],G=(_gp(k,m)[s]||[]).find(q=>q.n==SG);if(G&&G.a[i]){SI=i;SK=G.a[i].kode}}try{return _rm()}finally{SI=-1}};
+const wrapAll=f=>function(){const e=$('#sbx'),v=e&&e.value;if(e)e.value='all';try{return f.apply(this,arguments)}finally{if(e)e.value=v}};
+allMod=wrapAll(_am);allKelas=wrapAll(_ak);
+const _fb=fillBB;
+fillBB=function(){const r=_fb.apply(this,arguments);ui();return r};
+function ui(){let e=$('#sbx');
+if(!e){e=document.createElement('select');e.id='sbx';e.title='Sub materi (TP/ATP)';e.onchange=()=>{if(e.value!='all')$('#bb').value=e.value.split(':')[0];draw()};$('#bb').after(e);
+const mk=(t,ti,fn)=>{const x=document.createElement('button');x.textContent=t;x.title=ti;x.className='pmb';x.onclick=fn;return x};
+const go=d=>{const o=[...e.options].filter(x=>x.value!='all');if(!o.length)return;let i=o.findIndex(x=>x.value==e.value);i=i<0?(d>0?0:o.length-1):(i+d+o.length)%o.length;e.value=o[i].value;$('#bb').value=e.value.split(':')[0];draw()};
+const bs=[mk('◀','Sub materi sebelumnya',()=>go(-1)),mk('▶','Sub materi berikutnya',()=>go(1)),mk('Cetak sub materi ini','Cetak hanya sub materi yang dipilih',()=>{if(e.value=='all')go(1);window.print()})];e.after(...bs);e._b=bs}
+const on=cur=='mod';e.style.display=on?'':'none';e._b.forEach(x=>x.style.display=on?'':'none');if(!on)return;
+const {k,m,s}=S(),G=grp(k,m)[s]||[];let h='<option value="all">Semua sub materi bab ini ('+G.reduce((n,g)=>n+g.a.length,0)+' sub)</option>';
+G.forEach(g=>g.a.forEach((x,i)=>{const t=String(x.t||'').replace(/^Peserta didik mampu\s*/i,'');h+='<option value="'+g.n+':'+i+'">'+g.n+'.'+(i+1)+' '+esc(t.charAt(0).toUpperCase()+t.slice(1)).slice(0,80)+'</option>'}));
+if(e.dataset.sig!==h){const old=e.value;e.dataset.sig=h;e.innerHTML=h;if([...e.options].some(x=>x.value==old))e.value=old}
+if(e.value!='all'&&e.value.split(':')[0]!=$('#bb').value)e.value='all'}
+draw();
+})();
+</script>
+<script>
+/* ===== Modul Ajar (RPM) memakai Materi PPM (Semester 1, kelas 1-6) ===== */
+(function(){
+const PMN={1:'Pendidikan Agama Islam dan Budi Pekerti',2:'Pendidikan Pancasila',3:'Bahasa Indonesia',4:'Matematika',5:'IPAS',6:'PJOK',7:'Bahasa Inggris',8:'Seni Musik',9:'Seni Rupa',10:'Seni Tari',11:'Seni Teater',12:'Koding dan Kecerdasan Artifisial'};
+const pid=n=>Object.keys(PMN).find(i=>PMN[i]==n);
+const rows=(k,m)=>PPM.filter(r=>r[0]==k&&r[1]==pid(m)).sort((a,b)=>a[2]-b[2]);
+const use=()=>{const {k,m,s}=S();return s==1&&rows(k,m).length>0};
+const DPN=[['keimanan','Keimanan dan Ketakwaan terhadap Tuhan YME','beriman, bertakwa, dan berakhlak mulia'],['kewargaan','Kewargaan','menjadi warga yang taat aturan dan peduli sesama'],['penalaran','Penalaran Kritis','mengolah informasi, menganalisis, dan menarik simpulan secara logis'],['kreativitas','Kreativitas','menghasilkan gagasan dan karya yang orisinal serta bermanfaat'],['kolaborasi','Kolaborasi','bekerja sama dan saling membantu dalam kelompok'],['kemandirian','Kemandirian','bertanggung jawab atas proses dan hasil belajarnya sendiri'],['kesehatan','Kesehatan','menjaga kesehatan fisik dan mental'],['komunikasi','Komunikasi','menyampaikan gagasan dengan jelas dan santun']];
+const DPW={keimanan:['keimanan','beriman','takwa'],kewargaan:['kewargaan','kebinekaan','kebhinekaan','taat aturan','cinta tanah air','peduli lingkungan','warga'],penalaran:['penalaran','bernalar','nalar','literasi informasi'],kreativitas:['kreativitas','kreatif'],kolaborasi:['kolaborasi','kolaboratif','gotong royong','empati'],kemandirian:['kemandirian','mandiri'],kesehatan:['kesehatan'],komunikasi:['komunikasi','komunikatif']};
+const dpOn=(pl,id)=>(DPW[id]||[id]).some(w=>pl.includes(w));
+const q=x=>esc(x==null?'':x);
+const lc=s=>{s=String(s==null?'':s).trim().replace(/\.$/,'');return s.charAt(0).toLowerCase()+s.slice(1)};
+const dot=x=>{x=String(x==null?'':x).trim();return /[.!?”"]$/.test(x)?x:x+'.'};
+let BATCH=false;
+
+function doc(r){
+  const k=+r[0],m=PMN[r[1]],t=String(r[4]).replace(/\.$/,''),gu=GR(k)||'..........................',pl=String(r[5]).toLowerCase();
+  let c=0;const key=()=>['pb','rpm5',k,m,r[2],c++].join('|');
+  const E=x=>ed(q(x),key());
+  const bar=(a,u)=>`<div class="bar2"><b>${a}</b>${u?`<small>${u}</small>`:''}</div>`;
+  const pt='<div class="pt"></div>';
+  const sb=a=>`<div class="sub">${a}</div>`;
+  const kv=a=>'<table class="kv">'+a.map(([x,y])=>`<tr><th>${x}</th>${E(y)}</tr>`).join('')+'</table>';
+  const ls=a=>'<table class="l">'+a.filter(Boolean).map((x,i)=>`<tr><td class="n">${i+1}.</td>${E(x)}</tr>`).join('')+'</table>';
+  const kg=a=>'<td class="kg">'+a.filter(Boolean).map((x,i)=>{const kk=['pb','rpm5',k,m,r[2],'i',c++].join('|');let v=null;try{v=localStorage.getItem(kk)}catch(e){}const tx=Array.isArray(x)?x[0]+' '+x[1]:x;return `<div class="it"><span class="nb">${i+1}.</span><span contenteditable data-key="${kk}">${bl(v==null?tx:v)}</span></div>`}).join('')+'</td>';
+  const row=(a,b,w,arr)=>`<tr><td><b>${a}</b><br><small>${b}</small></td><td class="c">${w} menit</td>${kg(arr)}</tr>`;
+  const dp=DPN.filter(d=>dpOn(pl,d[0])).map(d=>d[1]+' — '+d[2]);
+  const dpx=dp.length?dp:String(r[5]).split(',').map(x=>x.trim()).filter(Boolean);
+  let o=`<div class="mdl">${KOP()}<br><div class="hd"><span class="cvt" style="font-size:10pt">MODUL AJAR</span><h2 style="font-size:17pt;color:#2f5d2f">${q(t)}</h2>${m} · Fase ${F(k)} · Kelas ${k} · Semester 1 · Kurikulum Merdeka · Pembelajaran Mendalam</div>`+
+  bar('A. IDENTITAS MODUL')+kv([['Penyusun',gu],['Satuan Pendidikan',C.sek],['Mata Pelajaran',m],['Fase / Kelas',`${F(k)} / ${k}`],['Semester','1 / Ganjil'],['Materi Pokok',t],['Alokasi Waktu','1 Pertemuan (2 JP; 1 JP = 35 menit) = 70 menit'],['Tahun Pelajaran',C.th],['Pendekatan','Pembelajaran Mendalam (Berkesadaran, Bermakna, Menggembirakan)'],['Model Pembelajaran',r[10]],['Bentuk Dokumen','Modul Ajar — memuat RPP']])+
+  bar('B. KOMPONEN INTI')+sb('Identifikasi Peserta Didik:')+kv([['Kesiapan belajar (kompetensi awal)','Untuk mempelajari materi '+t+', peserta didik diharapkan terlebih dahulu: '+dot(r[7])],['Karakteristik materi',r[6]]])+
+  sb('Dimensi Profil Lulusan yang dikembangkan:')+ls(dpx)+
+  sb('Capaian Pembelajaran (CP):')+kv([['Acuan','Capaian Pembelajaran Mata Pelajaran '+m+' Fase '+F(k)+' (Kepka BSKAP No. 046/H/KR/2025)'],['Materi PPM',t]])+
+  sb('Tujuan Pembelajaran:')+ls([r[8]])+
+  `<p><b>Pemahaman bermakna:</b> Pembelajaran ini penting karena ${q(dot(lc(r[28])))}</p><p><b>Pertanyaan pemantik:</b> <i>“${q(String(r[31]).replace(/[“”"]/g,''))}” · “${q(String(r[32]).replace(/[“”"]/g,''))}”</i></p>`+
+  pt+bar('C. DESAIN PEMBELAJARAN','4 KERANGKA PEMBELAJARAN MENDALAM')+kv([['Praktik Pedagogis',r[9]+', dengan model pembelajaran '+r[10]+'.'],['Kemitraan Pembelajaran','Kegiatan dimaksimalkan dengan melibatkan '+r[11]+' yang menunjang pemahaman murid pada materi '+t+'.'],['Lingkungan Pembelajaran','Guru memanfaatkan lingkungan belajar sebagai sarana mengelaborasi pemahaman murid, yaitu '+lc(r[12])+'.'],['Pemanfaatan Teknologi Digital','Guru memanfaatkan sumber digital seperti '+r[13]+', dan dapat memanfaatkan kecerdasan buatan untuk mendukung pembelajaran.'],['Topik Kontekstual dan Relevan','Murid mempelajari '+lc(r[14])+' agar memahami relevansinya dalam kehidupan.'],['Integrasi Lintas Disiplin','Materi '+t+' dapat dikembangkan bersama mata pelajaran '+r[15]+'.']])+
+  pt+bar('D. KEGIATAN PEMBELAJARAN — PERTEMUAN 1','TOTAL 70 MENIT · AWAL 10 · INTI 50 · PENUTUP 10')+kv([['Model Pembelajaran',r[10]],['Tujuan Pertemuan 1',r[8]]])+
+  '<table class="tp"><tr><th width="22%">Tahapan</th><th width="12%">Alokasi</th><th>Kegiatan Pembelajaran</th></tr>'+
+  row('Kegiatan Awal','Berkesadaran (Mindful)',10,['Guru mengucapkan salam, mengajak murid berdoa bersama, dan memeriksa kehadiran.',['Apersepsi:',r[16]],['Motivasi:',r[17]],['Penyampaian tujuan:','Guru menyampaikan tujuan pembelajaran hari ini, yaitu '+dot(lc(r[8]))],['Asesmen awal:','Guru memastikan kesiapan murid, yaitu '+lc(r[7])+'; dilanjutkan '+dot(lc(r[29]))]])+
+  row('Inti — Memahami','Berkesadaran, Bermakna',20,['Guru menekankan kesadaran penuh (mindfulness) dan memberikan ice breaking yang variatif agar murid hadir utuh dalam belajar.',r[18],r[19],r[20],r[21]])+
+  row('Inti — Mengaplikasi','Bermakna, Menggembirakan',20,[r[22],r[23],['Penerapan:',r[24]],['Diferensiasi:',r[25]]])+
+  row('Inti — Merefleksi','Berkesadaran, Bermakna',10,[r[26],r[27],['Penguatan:','Pembelajaran hari ini penting karena '+dot(lc(r[28]))]])+
+  row('Kegiatan Penutup','Menggembirakan (Joyful)',10,[['Simpulan bersama:','Murid bersama guru menyimpulkan pembelajaran hari ini.'],['Refleksi dan apresiasi:','Guru mengajak murid merenungkan yang telah dipelajari dan memberi apresiasi atas partisipasi mereka.'],['Tindak lanjut dan doa:','Guru memberikan tugas individu atau kelompok dan menyampaikan rencana pertemuan berikutnya, lalu mengajak murid berdoa dan mengucap salam.']])+
+  '</table><p style="font-size:9pt">Tahapan inti mengikuti 3 Pengalaman Belajar Pembelajaran Mendalam: memahami → mengaplikasi → merefleksi. Materi, langkah, dan asesmen bersumber dari data Modul Ajar PPM. LKPD tersedia di tab LKPD PPM.</p>'+
+  pt+bar('E. ASESMEN & KKTP')+sb('Asesmen pada awal pembelajaran (diagnostik):')+`<p>${q(r[29])}</p>`+
+  sb('Asesmen pada proses pembelajaran (formatif):')+ls([r[31],r[32],r[33]])+`<p>Dilaksanakan selama pembelajaran dengan cara: ${q(r[30])}</p>`+
+  sb('Asesmen pada akhir pembelajaran (sumatif):')+ls([r[34],r[35]])+`<p>Tercapai jika nilai ≥ ${q(C.kkm)}.</p>`+
+  sb('KKTP — Kriteria Ketercapaian:')+
+  '<table class="tp"><tr><th>Tujuan yang Diukur</th><th>Skor 1</th><th>Skor 2</th><th>Skor 3</th><th>Skor 4</th></tr>'+`<tr><td>${q(r[8])}</td>${E('Belum mampu, perlu bimbingan penuh')}${E('Mampu dengan bantuan')}${E('Mampu dengan tepat')}${E('Mampu dengan tepat dan menjelaskan alasannya')}</tr></table>`+
+  pt+bar('F. PENGAYAAN DAN REMEDIAL')+kv([['Pengayaan','Murid yang telah mencapai tujuan diberi tantangan tambahan, misalnya mengaitkan '+t+' dengan pengalaman di rumah atau lingkungan sekitar dan membagikannya kepada teman.'],['Remedial','Murid yang belum mencapai tujuan dibimbing kembali secara berkelompok kecil dengan contoh konkret dan latihan ulang yang lebih sederhana.'],['Diferensiasi',r[25]]])+
+  bar('G. REFLEKSI GURU DAN MURID')+sb('Refleksi murid:')+ls(['Apa yang paling kamu pahami hari ini?','Bagian mana yang masih membuatmu bingung?','Bagaimana perasaanmu saat belajar hari ini?'])+
+  sb('Refleksi guru:')+ls(['Apakah tujuan pembelajaran tercapai bagi sebagian besar murid?','Kegiatan mana yang paling efektif dan mana yang perlu diperbaiki?','Murid mana yang memerlukan pendampingan lanjutan?'])+
+  bar('PENGESAHAN')+`<p>Modul ajar <b>“${q(t)}”</b> mata pelajaran ${m} Kelas ${k} ini disusun dari materi Modul Ajar PPM sesuai ketentuan Kurikulum Merdeka · Pembelajaran Mendalam dan dinyatakan dapat digunakan dalam pembelajaran Tahun Pelajaran ${q(C.th)}.</p></div>`;
+  return o+sg();
+}
+
+const _rm=R.mod;
+R.mod=function(){
+  if(!(cur=='mod'&&use()))return _rm.apply(this,arguments);
+  const {k,m}=S(),L=rows(k,m),e=$('#rpx'),v=e&&e.value,one=v&&v!='all'&&L[+v]?[L[+v]]:L;
+  return COV('MODUL AJAR',one.length==1?q(one[0][4]):'Semester 1 · '+L.length+' Materi',`${m} · Kelas ${k} · Fase ${F(k)}`,GR(k))+one.map(doc).join('<div class="pt"></div>');
+};
+
+const _fb=fillBB;
+fillBB=function(){
+  const r=_fb.apply(this,arguments);
+  let e=$('#rpx');
+  if(!e){
+    e=document.createElement('select');e.id='rpx';e.title='Materi PPM';e.onchange=()=>draw();$('#bb').after(e);
+    const mk=(t,ti,fn)=>{const x=document.createElement('button');x.textContent=t;x.title=ti;x.className='pmb';x.onclick=fn;return x};
+    const go=d=>{const n=e.options.length-1;if(n<1)return;let i=e.selectedIndex+d;if(i<1)i=n;if(i>n)i=1;e.selectedIndex=i;draw()};
+    const bs=[mk('◀','Materi PPM sebelumnya',()=>go(-1)),mk('▶','Materi PPM berikutnya',()=>go(1)),mk('Cetak materi ini','Cetak hanya materi PPM yang dipilih',()=>{if(e.value=='all')go(1);window.print()})];
+    e.after(...bs);e._b=bs;
+  }
+  const on=cur=='mod'&&use();
+  e.style.display=on?'':'none';e._b.forEach(x=>x.style.display=on?'':'none');
+  if(on){
+    const {k,m}=S(),key=k+'|'+m;
+    if(e.dataset.key!=key){e.dataset.key=key;const L=rows(k,m);e.innerHTML='<option value="all">Semua materi PPM ('+L.length+' modul)</option>'+L.map((x,i)=>`<option value="${i}">${i+1}. ${esc(x[4]).slice(0,70)}</option>`).join('')}
+    const b=$('#bb');b.style.display='none';
+    if(BATCH)b.innerHTML='<option value="'+(b.options[0]?b.options[0].value:'0')+'">PPM</option>';
+    const sx=$('#sbx');if(sx){sx.style.display='none';(sx._b||[]).forEach(x=>x.style.display='none')}
+  }
+  return r;
+};
+
+const wr=f=>function(){
+  const e=$('#rpx'),v=e&&e.value;
+  if(e&&[...e.options].some(o=>o.value=='all'))e.value='all';
+  BATCH=true;
+  try{return f.apply(this,arguments)}
+  finally{BATCH=false;if(e&&[...e.options].some(o=>o.value==v))e.value=v;draw()}
+};
+allMod=wr(allMod);allKelas=wr(allKelas);
+draw();
+})();
+</script>
 </body></html>
